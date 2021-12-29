@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="E_ServerPhases" Id="{056cb57c-cd10-4f62-864e-19cf4b2a6c64}">
+    <Declaration><![CDATA[
+TYPE E_ServerPhases :
+(
+	NO_PHASE := 0,
+	INIT_PHASE := 10,
+	START_PHASE := 20,
+	RECEIVE_PHASE := 30
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

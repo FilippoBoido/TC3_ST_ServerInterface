@@ -1,13 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{fe4c4bd0-bb2f-4c2f-8bc6-e4fda118c397}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="MAIN" Id="{fe4c4bd0-bb2f-4c2f-8bc6-e4fda118c397}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbServerClientConnection : FB_ServerClientConnection;
+	fbSocketSend : FB_SocketSend;
+	fbSocketReceive : FB_SocketReceive;
+	hServer : T_HSERVER; 
+	
+	bInit : BOOL := TRUE;
+	
+	ePhase : E_ServerPhases := INIT_PHASE;
+	receiveBuffer : T_MAXSTRING;
 END_VAR
-]]>
-    </Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[F_CreateServerHnd(
+	sSrvNetID := '127.0.0.1.1.1',
+	sLocalHost := '',
+	nLocalPort := 200,
+	nMode :=  LISTEN_MODE_CLOSEALL,
+	bEnable := bInit,
+	hServer := hServer);
+
+fbServerClientConnection(
+	hServer := hServer,
+	bEnable := NOT bInit,
+	nRemotePort := 80,
+	tReconnect := T#30MS);
+
+fbSocketReceive(
+	bExecute := (ePhase = RECEIVE_PHASE),
+	tTimeout := T#30S,
+	pDest := ADR(receiveBuffer),
+	cbLen := SIZEOF(receiveBuffer),
+	hSocket := fbServerClientConnection.hSocket);
+	
+	
+CASE ePhase OF
+
+	INIT_PHASE:
+		bInit := FALSE;
+		ePhase := START_PHASE;
+		
+	START_PHASE:
+		IF fbServerClientConnection.eState = E_SocketConnectionState.eSOCKET_CONNECTED THEN
+			ePhase := RECEIVE_PHASE;
+		END_IF
+		
+	RECEIVE_PHASE:
+		
+		
+END_CASE]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="20" Count="4" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="55" Count="3" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="76" Count="2" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="39" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

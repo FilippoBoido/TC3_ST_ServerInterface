@@ -16,7 +16,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{D7267786-7B1B-4D34-92BD-4F7B77120F81}" Name="ServerInterface" PrjFilePath="ServerInterface\ServerInterface.plcproj" TmcFilePath="ServerInterface\ServerInterface.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ServerInterface\ServerInterface.tmc">
 					<Name>ServerInterface Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
